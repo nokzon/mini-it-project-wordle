@@ -1,4 +1,4 @@
-# wordle_jan
+# mini-it-project-wordle
 
 **WHAT I HAVE DONE**
 - added difficulty()
