@@ -74,7 +74,7 @@ def get_guess():
             for i, letter in enumerate(guessed_word):
 
                 win = tk.Label(game, text=letter.upper())
-                win.grid(row=tries, column=i, padx=10, pady=10)
+                win.grid(row=tries, column=i, padx=10, pady=10, x=365, y=120)
                 win.config(bg=GREEN, fg=BLACK)
 
             messagebox.showinfo("Congratulations!", "You guessed the word!")
@@ -128,6 +128,226 @@ def get_guess():
     if tries == 5:
         messagebox.showerror("You failed!", f"The word is {selected_word.upper()}")
         difficulty()
+    
+    button_logout = tk.Button(game, text = "return", command=difficulty)
+    button_logout.place(x=15, y=455)
+
+    
+
+def gamegui_easy():
+    global word_input
+    global tries 
+    global selected_word
+    
+    frame4 = tk.Frame(game)
+    frame4.place(x=0, y=0, width=800, height=500)
+    
+    gametitle = tk.Label(frame4, text='Word Guessing Game', font=('Arial', 30))
+    gametitle.pack(pady=15)
+        
+    tries = 0
+    selected_word = str(select_word())
+
+    # Input for word guess
+    word_input = tk.Entry(frame4)
+    word_input.place(x=315, y=405)
+    
+    # Button to submit guess
+    word_guess_button = tk.Button(frame4, text="Submit", command=lambda:[get_guess_easy(), clear_text(word_input)])
+    word_guess_button.place(x=365, y=435)
+
+# Game logic
+def get_guess_easy():
+
+    with open("valid-wordle-words.txt", "r") as file:
+        allText = file.read()
+        allowed = list(map(str, allText.split()))
+
+    guessed_word = word_input.get().lower()
+
+    global tries
+    if tries < 10:
+
+        # Checks if length of words are the same
+        if len(guessed_word) != len(selected_word):
+            messagebox.showerror("Error", f"Word length is too short or too long.\nPlease input a {len(selected_word)}-letter word.")
+
+        # Checks if word is valid
+        if guessed_word not in allowed:
+            messagebox.showerror("Error", "Word not in word list.")
+
+        # Checks if both words are the same
+        elif guessed_word == selected_word:
+
+            for i, letter in enumerate(guessed_word):
+
+                win = tk.Label(game, text=letter.upper())
+                win.grid(row=tries, column=i, padx=10, pady=10)
+                win.config(bg=GREEN, fg=BLACK)
+
+            messagebox.showinfo("Congratulations!", "You guessed the word!")
+            difficulty()
+
+        # Checks if letters match
+        else:
+
+            feedback = []
+            guess_list = [*guessed_word]
+            select_list = [*selected_word]
+
+            for letter in range(len(guessed_word)):
+
+                if guessed_word.lower()[letter] == selected_word[letter]:
+                    feedback.append(guessed_word[letter])
+                    guess_list[letter] = "placeholder1"
+                    select_list[letter] = "placeholder2"
+
+                else:
+                    feedback.append("#")
+
+            for index, letter in enumerate(guess_list):
+
+                if letter in select_list:
+                    feedback[index] = "$"
+                    select_list.remove(letter)
+
+            guess_list = [*guessed_word]
+
+            for i, (a, b) in enumerate(zip(guess_list, feedback)):
+
+                    label = tk.Label(game, text=a.upper())
+                    label.grid(row=tries, column=i, padx=10, pady=10)
+
+                    # Letters match, same position
+                    if a == b:
+                        label.config(bg=GREEN, fg=BLACK)
+
+                    # Letters match, wrong position
+                    elif b == "$":
+                        label.config(bg=YELLOW, fg=BLACK)
+
+                    # Letters don't match            
+                    else:
+                        label.config(bg=BLACK, fg=WHITE)
+
+            tries += 1
+    
+    # Game over
+    if tries == 10:
+        messagebox.showerror("You failed!", f"The word is {selected_word.upper()}")
+        difficulty()
+    
+    button_logout = tk.Button(game, text = "return", command=difficulty)
+    button_logout.place(x=15, y=455)
+
+
+def gamegui_hard():
+    global word_input
+    global tries 
+    global selected_word
+    
+    frame4 = tk.Frame(game)
+    frame4.place(x=0, y=0, width=800, height=500)
+    
+    gametitle = tk.Label(frame4, text='Word Guessing Game', font=('Arial', 30))
+    gametitle.pack(pady=25)
+        
+    tries = 0
+    selected_word = str(select_word())
+
+    # Input for word guess
+    word_input = tk.Entry(frame4)
+    word_input.place(x=315, y=330)
+    
+    # Button to submit guess
+    word_guess_button = tk.Button(frame4, text="Submit", command=lambda:[get_guess_hard(), clear_text(word_input)])
+    word_guess_button.place(x=365, y=360)
+
+# Game logic
+def get_guess_hard():
+
+    with open("difficult-wordle.words-txt", "r") as file:
+        allText = file.read()
+        allowed = list(map(str, allText.split()))
+
+    guessed_word = word_input.get().lower()
+
+    global tries
+    if tries < 5:
+
+        # Checks if length of words are the same
+        if len(guessed_word) != len(selected_word):
+            messagebox.showerror("Error", f"Word length is too short or too long.\nPlease input a {len(selected_word)}-letter word.")
+
+        # Checks if word is valid
+        if guessed_word not in allowed:
+            messagebox.showerror("Error", "Word not in word list.")
+
+        # Checks if both words are the same
+        elif guessed_word == selected_word:
+
+            for i, letter in enumerate(guessed_word):
+
+                win = tk.Label(game, text=letter.upper())
+                win.grid(row=tries, column=i, padx=10, pady=10, x=365, y=120)
+                win.config(bg=GREEN, fg=BLACK)
+
+            messagebox.showinfo("Congratulations!", "You guessed the word!")
+            difficulty()
+
+        # Checks if letters match
+        else:
+
+            feedback = []
+            guess_list = [*guessed_word]
+            select_list = [*selected_word]
+
+            for letter in range(len(guessed_word)):
+
+                if guessed_word.lower()[letter] == selected_word[letter]:
+                    feedback.append(guessed_word[letter])
+                    guess_list[letter] = "placeholder1"
+                    select_list[letter] = "placeholder2"
+
+                else:
+                    feedback.append("#")
+
+            for index, letter in enumerate(guess_list):
+
+                if letter in select_list:
+                    feedback[index] = "$"
+                    select_list.remove(letter)
+
+            guess_list = [*guessed_word]
+
+            for i, (a, b) in enumerate(zip(guess_list, feedback)):
+
+                    label = tk.Label(game, text=a.upper())
+                    label.grid(row=tries, column=i, padx=10, pady=10)
+
+                    # Letters match, same position
+                    if a == b:
+                        label.config(bg=GREEN, fg=BLACK)
+
+                    # Letters match, wrong position
+                    elif b == "$":
+                        label.config(bg=YELLOW, fg=BLACK)
+
+                    # Letters don't match            
+                    else:
+                        label.config(bg=BLACK, fg=WHITE)
+
+            tries += 1
+
+    # Game over
+    if tries == 5:
+        messagebox.showerror("You failed!", f"The word is {selected_word.upper()}")
+        difficulty()
+    
+    button_logout = tk.Button(game, text = "return", command=difficulty)
+    button_logout.place(x=15, y=455)
+
+    
 
 # Login page
 def login():
@@ -304,7 +524,8 @@ def difficulty():
         text = "EASY",
         height = 3,
         width = 5,
-        font=('Calibri', 15, 'bold'), ) # add command to go to hard lvl
+        font=('Calibri', 15, 'bold'), 
+        command=gamegui_easy) # add command to go to hard lvl
 
     description = ttk.Label(
         level_frame, 
@@ -339,7 +560,8 @@ def difficulty():
         text = "HARD",
         height = 3,
         width = 5,
-        font=('Calibri', 15, 'bold')) # add command to go to hard lvl
+        font=('Calibri', 15, 'bold'),
+        command=gamegui_hard) # add command to go to hard lvl
 
     description = ttk.Label(
         level_frame, 
