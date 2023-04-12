@@ -10,4 +10,5 @@ WHAT I HAVE NOT DONE
 - idk how to change the options of the game yet
 
 IMPORTANT, SO FAR ONLY THE DEFAULT BUTTON WORKS
+and u can change anything in my code idm
 
