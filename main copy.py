@@ -10,9 +10,20 @@ def select_word():
         words = list(map(str, allText.split()))
         return random.choice(words)
     
+# Randomly selects word (for the hard mode)
+def select_word2():
+    with open("difficultanswerlist.txt", "r") as file:
+        allText = file.read()
+        words = list(map(str, allText.split()))
+        return random.choice(words)
+    
 # Clears input    
 def clear_text(text):
     text.delete(0, 5)
+
+# Clears input (for hard mode)   
+def clear_text2(text):
+    text.delete(0, 7)
 
 # Game window
 game = tk.Tk()
@@ -21,6 +32,9 @@ GREEN = "#007d21"
 YELLOW = "#e2e600"
 BLACK = "#000000"
 WHITE = "#FFFFFF"
+LIGHTGREEN = "#b7e4c7"
+LIGHTRED = "#ff758f"
+LIGHTORANGE = "#fec89a"
 
 game.title("Wordle")
 game.geometry("800x500")
@@ -48,9 +62,12 @@ def gamegui():
     word_guess_button = tk.Button(frame4, text="Submit", command=lambda:[get_guess(), clear_text(word_input)])
     word_guess_button.place(x=365, y=360)
 
+    # button to return to difficulty screen
+    button_logout = tk.Button(game, text = "return", command=difficulty)
+    button_logout.place(x=15, y=455)
+
 # Game logic
 def get_guess():
-
     with open("valid-wordle-words.txt", "r") as file:
         allText = file.read()
         allowed = list(map(str, allText.split()))
@@ -74,7 +91,7 @@ def get_guess():
             for i, letter in enumerate(guessed_word):
 
                 win = tk.Label(game, text=letter.upper())
-                win.grid(row=tries, column=i, padx=10, pady=10, x=365, y=120)
+                win.grid(row=tries, column=i, padx=10, pady=10)
                 win.config(bg=GREEN, fg=BLACK)
 
             messagebox.showinfo("Congratulations!", "You guessed the word!")
@@ -128,9 +145,6 @@ def get_guess():
     if tries == 5:
         messagebox.showerror("You failed!", f"The word is {selected_word.upper()}")
         difficulty()
-    
-    button_logout = tk.Button(game, text = "return", command=difficulty)
-    button_logout.place(x=15, y=455)
 
     
 
@@ -155,6 +169,10 @@ def gamegui_easy():
     # Button to submit guess
     word_guess_button = tk.Button(frame4, text="Submit", command=lambda:[get_guess_easy(), clear_text(word_input)])
     word_guess_button.place(x=365, y=435)
+
+    # button to return to difficulty screen
+    button_logout = tk.Button(game, text = "return", command=difficulty)
+    button_logout.place(x=15, y=455)
 
 # Game logic
 def get_guess_easy():
@@ -236,9 +254,6 @@ def get_guess_easy():
     if tries == 10:
         messagebox.showerror("You failed!", f"The word is {selected_word.upper()}")
         difficulty()
-    
-    button_logout = tk.Button(game, text = "return", command=difficulty)
-    button_logout.place(x=15, y=455)
 
 
 def gamegui_hard():
@@ -253,20 +268,24 @@ def gamegui_hard():
     gametitle.pack(pady=25)
         
     tries = 0
-    selected_word = str(select_word())
+    selected_word = str(select_word2())
 
     # Input for word guess
     word_input = tk.Entry(frame4)
     word_input.place(x=315, y=330)
     
     # Button to submit guess
-    word_guess_button = tk.Button(frame4, text="Submit", command=lambda:[get_guess_hard(), clear_text(word_input)])
+    word_guess_button = tk.Button(frame4, text="Submit", command=lambda:[get_guess_hard(), clear_text2(word_input)])
     word_guess_button.place(x=365, y=360)
+
+    # button to return to difficulty screen
+    button_logout = tk.Button(game, text = "return", command=difficulty)
+    button_logout.place(x=15, y=455)
 
 # Game logic
 def get_guess_hard():
 
-    with open("difficult-wordle.words-txt", "r") as file:
+    with open("difficult-wordle-words.txt", "r") as file:
         allText = file.read()
         allowed = list(map(str, allText.split()))
 
@@ -343,9 +362,6 @@ def get_guess_hard():
     if tries == 5:
         messagebox.showerror("You failed!", f"The word is {selected_word.upper()}")
         difficulty()
-    
-    button_logout = tk.Button(game, text = "return", command=difficulty)
-    button_logout.place(x=15, y=455)
 
     
 
@@ -524,6 +540,7 @@ def difficulty():
         text = "EASY",
         height = 3,
         width = 5,
+        background= LIGHTGREEN,
         font=('Calibri', 15, 'bold'), 
         command=gamegui_easy) # add command to go to hard lvl
 
@@ -543,6 +560,7 @@ def difficulty():
         text = "DEFAULT",
         height = 3,
         width = 5,
+        background= LIGHTORANGE,
         font=('Calibri', 15, 'bold'), command=gamegui) # add command to go to hard lvl
 
     description = ttk.Label(
@@ -560,6 +578,7 @@ def difficulty():
         text = "HARD",
         height = 3,
         width = 5,
+        background= LIGHTRED,
         font=('Calibri', 15, 'bold'),
         command=gamegui_hard) # add command to go to hard lvl
 
