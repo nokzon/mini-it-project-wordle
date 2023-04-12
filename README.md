@@ -7,5 +7,7 @@ WHAT I HAVE DONE
 - can logout from difficulty pg\n\n
 
 WHAT I HAVE NOT DONE
-- 
+- idk how to change the options of the game yet
+
+IMPORTANT, SO FAR ONLY THE DEFAULT BUTTON WORKS
 
